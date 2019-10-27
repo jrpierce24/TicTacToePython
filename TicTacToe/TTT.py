@@ -19,32 +19,70 @@ def drawBoard():
     print("\n")
 
 def userInput():
-    validInput = False
-    while not validInput:
+    validInput = True
+    while validInput:
         where = input("\nSelect Postion between 1 - 9:\n")
         # Makes where the player can not pick a postion that is already occupied
-        if board[int(where)-1] == "-" and int(where) >= 0 and int(where) <= 9:
+        if board[int(where)-1] == "-" and int(where) > 0 and int(where) <= 9:
             board[int(where)-1] = 'X'
-            validInput = True
+            validInput = False
         else:
             print("Please Select another Place\n")
-            
-def compInput():
-    goodNum = False
 
-    while not goodNum:
+
+def compInput(Turn):
+''' global center
+    global trick1
+    global trick2
+    global trick3
+
+    if Turn == 1:
+        if board[4] == "-":
+            board[4] = "O"
+            center = True
+        else:
+            board[2] = "O"
+            center = False  
+    if Turn == 2:
+        if center:
+            if board[0] == "X" and board[8] == "X":
+                board[7] == "O" 
+                trick1 = True
+                trick2 = False
+                trick3 = False
+            if board[2] == "X" and board[6] == "X":  
+                board[7] == "O" 
+                trick1 = False
+                trick2 = True
+                trick3 = False
+            if board[6] == "X" and board[4] == "X":
+                board[0] == "O"
+                trick1 = False
+                trick2 = False
+                trick3 = True
+'''
+
+
+"""
+    goodNum = True
+    while goodNum:
         compNum = random.randint(0,8)
         if board[compNum] == "-":
             board[compNum] = "O"
-            goodNum = True
-            break
+            goodNum = False
+"""
+def center(turn):
+    if turn == 1:
+
+
 
 def winCheck():
     if TurnCount >= 3:
-        if rowCheckO or rowCheckX:
+        if rowCheckO() or rowCheckX() or colCheckX() or colCheckO() or diaCheckX() or diaCheckO():
             return False
         return True
     return True
+
 
 def rowCheckX():
     # Row Check X
@@ -71,6 +109,52 @@ def rowCheckO():
         lose() 
         return True
     return False
+
+def colCheckX():
+    # Col Check X
+    if board[0] == 'X'and board[3] == "X" and board[6] == "X": 
+        win() 
+        return True
+    if board[1] == 'X'and board[4] == "X" and board[7] == "X": 
+        win() 
+        return True
+    if board[2] == 'X'and board[5] == "X" and board[8] == "X": 
+        win() 
+        return True
+    return False
+
+def colCheckO():
+    # Row Check O
+    if board[0] == 'O'and board[3] == "O" and board[6] == "O": 
+        lose() 
+        return True
+    if board[1] == 'O'and board[4] == "O" and board[7] == "O": 
+        lose() 
+        return True
+    if board[2] == 'O'and board[5] == "O" and board[8] == "O": 
+        lose() 
+        return True
+    return False
+def diaCheckX():
+    # Row Check X
+    if board[0] == 'X'and board[4] == "X" and board[8] == "X": 
+        win() 
+        return True
+    if board[2] == 'X'and board[4] == "X" and board[6] == "X": 
+        win() 
+        return True
+    return False
+
+def diaCheckO():
+    # Row Check X
+    if board[0] == 'O'and board[4] == "O" and board[8] == "O": 
+        lose() 
+        return True
+    if board[2] == 'O'and board[4] == "O" and board[6] == "O": 
+        lose() 
+        return True
+    return False
+
 def win():
     print("\nCongrats! You Beat The Game\n")
 
@@ -78,6 +162,7 @@ def lose():
     print("\nDarn! You Lost The Game!\n")
 
 while gameLive:
+    
     # Draw Board
     drawBoard()
 
@@ -92,11 +177,11 @@ while gameLive:
 
     drawBoard()
 
-    if winCheck == False:
+    if winCheck() == False:
         break
     
     # Computer input
-    compInput()
+    compInput(TurnCount)
     drawBoard()
     gameLive = winCheck()
     # Check Win
@@ -106,5 +191,4 @@ while gameLive:
         # Check Draw
         # Who?
 
-    # Flip Players
 
